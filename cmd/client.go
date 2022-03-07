@@ -17,7 +17,6 @@ package cmd
 
 import (
 	"context"
-	"fmt"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 	pb "github.com/airwalk225/go-grpc/pkg/gopher"

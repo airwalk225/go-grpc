@@ -55,7 +55,7 @@ func (s *Server) GetGopher(ctx context.Context, req *pb.GopherRequest) (*pb.Goph
 
 	log.Printf("Received: %v", req.GetName())
 
-	response, err := http.Get(KuteGoAPIURL + "/gophers?name=" + req.GetName())
+	response, err := http.Get(KuteGoAPIURL + req.GetName() + ".png")
 	if err != nil {
 		log.Fatalf("Failed to call the KuteGoAPI: %v", err)
 	}
