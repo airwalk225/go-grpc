@@ -17,9 +17,9 @@ package cmd
 
 import (
 	"context"
+	pb "github.com/airwalk225/go-grpc/pkg/gopher"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
-	pb "github.com/airwalk225/go-grpc/pkg/gopher"
 	"google.golang.org/grpc"
 	"os"
 	"time"
