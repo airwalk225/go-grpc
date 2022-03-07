@@ -16,23 +16,48 @@ limitations under the License.
 package cmd
 
 import (
+	"context"
 	"fmt"
-
+	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
+	pb "github.com/airwalk225/go-grpc/pkg/gopher"
+	"google.golang.org/grpc"
+	"os"
+	"time"
+)
+
+const (
+	address     = "localhost:9000"
+	defaultName = "dr-who"
 )
 
 // clientCmd represents the client command
 var clientCmd = &cobra.Command{
 	Use:   "client",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+	Short: "Query the gRPC server",
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("client called")
+		var conn *grpc.ClientConn
+		conn, err := grpc.Dial(address, grpc.WithInsecure())
+		if err != nil {
+			log.Fatalf("Did not connect: %s", err)
+		}
+		defer conn.Close()
+
+		client := pb.NewGopherClient(conn)
+
+		var name string
+
+		if len(os.Args) > 2 {
+			name = os.Args[2]
+		}
+		ctx, cancel := context.WithTimeout(context.Background(), time.Second)
+		defer cancel()
+
+		r, err := client.GetGopher(ctx, &pb.GopherRequest{Name: name})
+		if err != nil {
+			log.Fatalf("Could not greet: %v", err)
+		}
+		log.Printf("URL: %s", r.GetMessage())
 	},
 }
 

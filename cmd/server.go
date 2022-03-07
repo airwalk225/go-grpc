@@ -26,8 +26,8 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/spf13/cobra"
 	pb "github.com/airwalk225/go-grpc/pkg/gopher"
+	"github.com/spf13/cobra"
 	"google.golang.org/grpc"
 )
 
@@ -49,8 +49,8 @@ func (s *Server) GetGopher(ctx context.Context, req *pb.GopherRequest) (*pb.Goph
 	}
 
 	if req.Name == "" {
-		fmt.Println("name must not be empty in the request")
-		return res, xerrors.Errorf("name must not be empty in the request")
+		fmt.Println("Name must not be empty in the request")
+		return res, xerrors.Errorf("Name must not be empty in the request")
 	}
 
 	log.Printf("Received: %v", req.GetName())
@@ -64,13 +64,13 @@ func (s *Server) GetGopher(ctx context.Context, req *pb.GopherRequest) (*pb.Goph
 	if response.StatusCode == 200 {
 		body, err := ioutil.ReadAll(response.Body)
 		if err != nil {
-			log.Fatalf("failed to read response body: %v", err)
+			log.Fatalf("Failed to read response body: %v", err)
 		}
 
 		var data []Gopher
 		err = json.Unmarshal(body, &data)
 		if err != nil {
-			log.Fatalf("failed to unmarshal JSON: %v", err)
+			log.Fatalf("Failed to unmarshal JSON: %v", err)
 		}
 
 		var gophers strings.Builder
